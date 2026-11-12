@@ -1,0 +1,43 @@
+package com.cwrm.strategy;
+
+/**
+ * Calculates reward points using a recycling campaign bonus rate.
+ * Allows new campaigns to be introduced without modifying any other
+ * reward strategy (Open/Closed Principle).
+ */
+public class CampaignRewardStrategy implements RewardStrategy {
+
+    private final int bonusPointsPerKg;
+
+    /**
+     * Creates a campaign strategy with a fixed bonus rate.
+     *
+     * @param bonusPointsPerKg the bonus points awarded per kilogram
+     * @throws IllegalArgumentException if bonusPointsPerKg is negative
+     */
+    public CampaignRewardStrategy(int bonusPointsPerKg) {
+        if (bonusPointsPerKg < 0) {
+            throw new IllegalArgumentException("Bonus points cannot be negative.");
+        }
+        this.bonusPointsPerKg = bonusPointsPerKg;
+    }
+
+    @Override
+    public int calculatePoints(String material, double quantity) {
+        validateMaterial(material);
+        validateQuantity(quantity);
+        return (int) Math.floor(bonusPointsPerKg * quantity);
+    }
+
+    private void validateMaterial(String material) {
+        if (material == null || material.isBlank()) {
+            throw new IllegalArgumentException("Material cannot be empty.");
+        }
+    }
+
+    private void validateQuantity(double quantity) {
+        if (quantity <= 0 || Double.isNaN(quantity) || Double.isInfinite(quantity)) {
+            throw new IllegalArgumentException("Quantity must be a positive number.");
+        }
+    }
+}
