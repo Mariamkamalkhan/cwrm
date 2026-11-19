@@ -5,10 +5,10 @@ package com.cwrm.strategy;
  * Each material has a fixed points-per-kilogram rate; unrecognised
  * materials fall back to a minimum default rate.
  *
- * All rates are named constants rather than magic numbers, keeping the
- * routine self-documenting and its decision logic the single location
- * to change if a rate is revised (Open/Closed Principle: new rates or
- * materials are added without modifying calculatePoints itself).
+ * All rates are named constants rather than magic numbers, so each rate
+ * has a self-documenting name and exactly one place where it is defined.
+ * New reward rules are added as new RewardStrategy classes (see
+ * CampaignRewardStrategy) rather than by editing this class.
  */
 public class MaterialRewardStrategy implements RewardStrategy {
 
@@ -19,9 +19,11 @@ public class MaterialRewardStrategy implements RewardStrategy {
     private static final int DEFAULT_POINTS_PER_KG = 1;
 
     /**
+     * {@inheritDoc}
+     *
      * Cyclomatic complexity: 1 (no decision points in this routine body;
-     * validation and lookup are delegated to their own single-decision
-     * routines below, keeping each piece intellectually manageable).
+     * validation and lookup are delegated to the small routines below,
+     * keeping each piece intellectually manageable).
      */
     @Override
     public int calculatePoints(String material, double quantity) {
@@ -37,9 +39,9 @@ public class MaterialRewardStrategy implements RewardStrategy {
     /**
      * Resolves the points-per-kilogram rate for a normalised material name.
      *
-     * Cyclomatic complexity: 5 (one decision point per case label, plus
-     * the implicit default), well under the threshold of 10 at which a
-     * routine should be split further.
+     * Cyclomatic complexity: 5 (1 for the routine plus 1 for each of the
+     * four case labels), within the 0-5 "likely fine" band and well under
+     * the threshold of 10 at which a routine must be split.
      *
      * @param normalisedMaterial the material name, already trimmed and
      *        lower-cased
@@ -62,7 +64,8 @@ public class MaterialRewardStrategy implements RewardStrategy {
 
     /**
      * Part of the class's Barricade: rejects a null or blank material
-     * before any calculation is attempted. Cyclomatic complexity: 2.
+     * before any calculation is attempted.
+     * Cyclomatic complexity: 3 (1 + one if + one ||).
      */
     private void validateMaterial(String material) {
         if (material == null || material.isBlank()) {
@@ -73,7 +76,7 @@ public class MaterialRewardStrategy implements RewardStrategy {
     /**
      * Part of the class's Barricade: rejects a non-positive or
      * non-finite quantity before any calculation is attempted.
-     * Cyclomatic complexity: 2.
+     * Cyclomatic complexity: 4 (1 + one if + two ||).
      */
     private void validateQuantity(double quantity) {
         if (quantity <= 0 || Double.isNaN(quantity) || Double.isInfinite(quantity)) {
