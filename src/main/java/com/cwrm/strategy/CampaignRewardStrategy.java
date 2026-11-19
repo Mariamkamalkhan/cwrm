@@ -29,6 +29,8 @@ public class CampaignRewardStrategy implements RewardStrategy {
     }
 
     /**
+     * {@inheritDoc}
+     *
      * Cyclomatic complexity: 1 (no decision points; validation is
      * delegated to the barricade routines below).
      */
@@ -44,7 +46,8 @@ public class CampaignRewardStrategy implements RewardStrategy {
 
     /**
      * Part of the class's Barricade: rejects a null or blank material
-     * before any calculation is attempted. Cyclomatic complexity: 2.
+     * before any calculation is attempted.
+     * Cyclomatic complexity: 3 (1 + one if + one ||).
      */
     private void validateMaterial(String material) {
         if (material == null || material.isBlank()) {
@@ -55,7 +58,7 @@ public class CampaignRewardStrategy implements RewardStrategy {
     /**
      * Part of the class's Barricade: rejects a non-positive or
      * non-finite quantity before any calculation is attempted.
-     * Cyclomatic complexity: 2.
+     * Cyclomatic complexity: 4 (1 + one if + two ||).
      */
     private void validateQuantity(double quantity) {
         if (quantity <= 0 || Double.isNaN(quantity) || Double.isInfinite(quantity)) {

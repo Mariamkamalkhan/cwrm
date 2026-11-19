@@ -82,13 +82,23 @@ class RewardStrategyTest {
     // Test 7 - DELIBERATELY FAILING: exposes a real rounding limitation.
     // Math.floor() truncates small quantities to zero points (e.g. 0.3kg of
     // paper = floor(0.6) = 0), which can discourage residents from reporting
-    // small recycling amounts. This is a known design limitation, not a bug
-    // being hidden - explain it exactly this way in Section 4.
+    // small recycling amounts. Kept failing on purpose to document this
+    // known limitation; a future version should apply a minimum of 1 point.
     @Test
     void calculatePoints_smallPaperQuantity_awardsAtLeastOnePoint() {
         RewardStrategy strategy = new MaterialRewardStrategy();
         int points = strategy.calculatePoints("paper", 0.3);
         assertTrue(points >= 1,
-            "A resident who recycles any positive quantity should earn at least 1 point");
+                "A resident who recycles any positive quantity should earn at least 1 point");
+    }
+
+    // Test 8 - CampaignRewardStrategy enforces the same barricade as
+    // MaterialRewardStrategy, so the class contract holds for every
+    // RewardStrategy implementation, not just one.
+    @Test
+    void calculatePoints_campaignStrategyWithBlankMaterial_throwsIllegalArgumentException() {
+        RewardStrategy strategy = new CampaignRewardStrategy(5);
+        assertThrows(IllegalArgumentException.class,
+                () -> strategy.calculatePoints("   ", 2.0));
     }
 }
