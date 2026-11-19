@@ -41,7 +41,8 @@ build is configured (`testFailureIgnore` in `pom.xml`) so this expected
 failure does not stop the build.
 
 ## Project structure
-``
+
+```
 src/main/java/com/cwrm/
 ├── model/        Domain classes: User, Resident, WasteCollector, Administrator, PickupRequest, PickupRequestBuilder, CollectionStatus
 ├── strategy/     Strategy pattern: RewardStrategy, MaterialRewardStrategy, CampaignRewardStrategy
@@ -50,7 +51,7 @@ src/main/java/com/cwrm/
 ├── controller/   Input validation and GUI <-> service wiring
 └── view/         Swing GUI screens
 src/test/java/com/cwrm/   JUnit 5 tests mirroring the packages above
-``
+```
 ## Team
 
 | Member | Responsibility |
