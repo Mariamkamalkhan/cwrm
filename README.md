@@ -51,7 +51,7 @@ src/test/java/com/cwrm/   Mirrors the above, JUnit 5 tests
 | Member | Responsibility |
 |---|---|
 | 1 | Domain model + Builder pattern (pickup requests) |
-| 2 | Strategy pattern (with Member 3) + GUI/MVC |
+| 2 | Strategy pattern  + GUI/MVC |
 | 3 | Core business logic, Strategy implementation, unit testing, JaCoCo |
 | 4 | OpenStreetMap Nominatim API integration |
-| (5 if applicable) | - |
+
